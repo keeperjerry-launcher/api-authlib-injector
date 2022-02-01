@@ -1,0 +1,21 @@
+Options All -Indexes
+SetEnv HTTP_MOD_REWRITE off
+RewriteEngine off
+ErrorDocument 403 /authlib/404.php
+ErrorDocument 404 /authlib/404.php
+AddDefaultCharset UTF-8
+
+# API Server
+#RewriteRule ^authlib/api/profiles/minecraft$ /authlib/api/profiles.php$1 [L]
+
+RewriteRule ^(.*)$ /authlib/index.php [QSA,L]
+
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
+<Files .php>
+    order allow,deny
+    deny from all
+</Files>
