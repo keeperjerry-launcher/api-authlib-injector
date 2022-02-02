@@ -112,34 +112,23 @@
     // Texture request
     function request_get_textures($skins_url, $skin_hash, $cloak_hash)
     {
-        if (empty($skin_hash))
+        $results = array();
+
+        if (!empty($skin_hash))
         {
-            $result_skin = array(
-                'url' => $skins_url."skins/defaultSkin_other.png"
-            );
-        }
-        else
-        {
-            $result_skin = array (
+            $results['SKIN'] = array (
                 'url' => $skins_url.'skins/'.$skin_hash.".png"
             );
         }
 
-        if (empty($cloak_hash))
+        if (!empty($cloak_hash))
         {
-            return array (
-                'SKIN'  => $result_skin
+            $results['CAPE'] = array (
+                'url' => $skins_url.'cloaks/'.$cloak_hash.".png"
             );
         }
-        else
-        {
-            return array (
-                'SKIN'  => $result_skin,
-                'CAPE'  => array (
-                    'url' => $skins_url.'cloaks/'.$cloak_hash.".png"
-                )
-            );
-        }
+
+        return (Object)$results;
     }
     
     // Base64 request

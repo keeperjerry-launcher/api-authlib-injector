@@ -9,7 +9,9 @@
     ADD COLUMN mc_uuid CHAR(36) UNIQUE DEFAULT NULL,
     ADD COLUMN mc_access_token CHAR(32) DEFAULT NULL,
     ADD COLUMN mc_client_token CHAR(32) DEFAULT NULL,
-    ADD COLUMN mc_server_id VARCHAR(41) DEFAULT NULL;
+    ADD COLUMN mc_server_id VARCHAR(41) DEFAULT NULL,
+    ADD COLUMN mc_skin_hash CHAR(36) DEFAULT NULL,
+    ADD COLUMN mc_cloak_hash CHAR(36) DEFAULT NULL;
 
     -- Создаёт триггер на генерацию UUID для новых пользователей
     DELIMITER //
@@ -43,6 +45,9 @@
         'server_link_homepage'      => "https://example.com",                           // Домашняя страница сайта
         'server_link_register'      => "https://example.com/index.php?do=register",     // Ссылка на регистрацию
         'server_domain'             => "example.com",                                   // Домен сайта для скинов
+        
+        // Настройка скинов
+        'server_url_skins'          => "https://example.com/cabinet/",
 
         // =========================================
         // Настройка SQL соединения 
@@ -52,23 +57,26 @@
         //'sql_db_user'               => "user",          // Пользователь базы данных
         //'sql_db_password'           => "password",      // Пароль базы данных
         // Требуемые права: SELECT и UPDATE
-        'sql_db_host'               => "127.0.0.1",     // IP или домен базы данных
-        'sql_db_database'           => "_test",         // Имя базы данных
-        'sql_db_user'               => "test",          // Пользователь базы данных
-        'sql_db_password'           => "6oki8ubO",      // Пароль базы данных
+        'sql_db_host'               => "127.0.0.1",         // IP или домен базы данных
+        'sql_db_database'           => "_test",             // Имя базы данных
+        'sql_db_user'               => "test",              // Пользователь базы данных
+        'sql_db_password'           => "6oki8ubO",          // Пароль базы данных
 
         // Переменные таблицы SQL
-        'sql_db_table'              => "dle_users",     // Таблица с пользователями
+        'sql_db_table'              => "dle_users",         // Таблица с пользователями
         
         // Переменные SQL столбцов в таблице DLE
-        'sql_id' 				    => "user_id",       // Столбец с ID пользователя
-        'sql_username'			    => "name",          // Столбец с никнеймом пользователя
-        'sql_email'				    => "email",         // Столбец с почтой пользователя
-        'sql_password'			    => "password",      // Столбец с паролем пользователя
+        'sql_id' 				    => "user_id",           // Столбец с ID пользователя
+        'sql_username'			    => "name",              // Столбец с никнеймом пользователя
+        'sql_email'				    => "email",             // Столбец с почтой пользователя
+        'sql_password'			    => "password",          // Столбец с паролем пользователя
 
         // Переменные SQL столбцов в таблице MC
-        'sql_uuid' 				    => "mc_uuid",          // Столбец с UUID пользователя
-        'sql_access_token' 		    => "mc_access_token",  // Столбец с токеном доступа пользователя
-        'sql_client_token' 		    => "mc_client_token",  // Столбец с токеном лаунчера пользователя
-        'sql_server_id' 		    => "mc_server_id"      // Столбец с ID сервера пользователя
+        'sql_uuid' 				    => "mc_uuid",           // Столбец с UUID пользователя
+        'sql_access_token' 		    => "mc_access_token",   // Столбец с токеном доступа пользователя
+        'sql_client_token' 		    => "mc_client_token",   // Столбец с токеном лаунчера пользователя
+        'sql_server_id' 		    => "mc_server_id",      // Столбец с ID сервера пользователя
+
+        'sql_skin_hash'             => "mc_skin_hash",      // Столбец с хешем скина
+        'sql_cloak_hash'            => "mc_cloak_hash"      // Столбец с хешем плаща
     );
