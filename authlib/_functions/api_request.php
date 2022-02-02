@@ -26,6 +26,9 @@
         );
     }
 
+    // =========================================
+    // AuthServer Request JSON
+    // =========================================
     function request_authserver_profile($uuid, $username, $access_token, $client_token, $requestUser)
     {
         if ($requestUser == true)
@@ -37,16 +40,16 @@
                     'availableProfiles' => array(
                         array(
                             'name'      => $username,
-                            'id'        => str_replace('-', '', $uuid)
+                            'id'        => $uuid
                         )
                     ),
                     'selectedProfile'   => array(
-                        'id'        => str_replace('-', '', $uuid),
+                        'id'        => $uuid,
                         'name'      => $username,
                         'legacy'    => false
                     ),
                     'user' => array(
-                        'id'            => str_replace('-', '', $uuid),
+                        'id'            => $uuid,
                         'properties'    => array(
                             array(
                                 'name'  => "preferredLanguage",
@@ -69,13 +72,80 @@
                 'availableProfiles' => array(
                     array(
                         'name'      => $username,
-                        'id'        => str_replace('-', '', $uuid)
+                        'id'        => $uuid
                     )
                 ),
                 'selectedProfile'   => array(
-                    'id'        => str_replace('-', '', $uuid),
+                    'id'        => $uuid,
                     'name'      => $username,
                     'legacy'    => false
+                )
+            )
+        );
+    }
+
+    // =========================================
+    // SessionServer Request JSON
+    // =========================================
+    // Texture request
+    function request_get_textures($skins_url, $skin_hash, $cloak_hash)
+    {
+        if (empty($skin_hash))
+        {
+            $result_skin = array(
+                'url' => $skins_url."skins/defaultSkin_other.png"
+            );
+        }
+        else
+        {
+            $result_skin = array (
+                'url' => $skins_url.'skins/'.$skin_hash.".png"
+            );
+        }
+
+        if (empty($cloak_hash))
+        {
+            return array (
+                'SKIN'  => $result_skin
+            );
+        }
+        else
+        {
+            return array (
+                'SKIN'  => $result_skin,
+                'CAPE'  => array (
+                    'url' => $skins_url.'cloaks/'.$cloak_hash.".png"
+                )
+            );
+        }
+    }
+    
+    // Base64 request
+    function request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+    {
+        $base64 = json_encode(
+            array(
+                'timestamp'     => time(),
+                'profileId'     => $uuid,
+                'profileName'   => $username,
+                'textures'      => request_get_textures($skins_url, $skin_hash, $cloak_hash)
+            ), JSON_UNESCAPED_SLASHES
+        );
+        return base64_encode($base64);
+    }
+
+    // Session request
+    function request_get_session_profile($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+    {
+        request_die_json(
+            array (
+                'id' => $uuid,
+                'name' => $username,
+                'properties' => array(
+                    array(
+                        'name'      => "textures",
+                        'value'     => request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+                    )
                 )
             )
         );
