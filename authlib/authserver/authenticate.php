@@ -97,7 +97,7 @@
         $update_access_token->bindValue(':id', $sql_auth_result[$config['sql_id']]);
         $update_access_token->execute();
 
-        request_authserver_profile($uuid, $username, $new_access_token, $clientToken, $requestUser);
+        request_authserver_profile_auth($uuid, $username, $new_access_token, $clientToken, $requestUser);
     }
     catch (PDOException $e)
     {

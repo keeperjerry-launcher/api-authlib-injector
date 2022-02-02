@@ -31,6 +31,11 @@
     $json = json_decode(file_get_contents('php://input'));
 	$accessToken = $json->accessToken;
     $clientToken = $json->clientToken;
+
+    if($accessToken == null || $clientToken == null)
+    {
+        die(header("status: 403"));
+    }
     
     try
     {

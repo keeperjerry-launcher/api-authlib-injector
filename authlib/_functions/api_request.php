@@ -29,7 +29,7 @@
     // =========================================
     // AuthServer Request JSON
     // =========================================
-    function request_authserver_profile($uuid, $username, $access_token, $client_token, $requestUser)
+    function request_authserver_profile_auth($uuid, $username, $access_token, $client_token, $requestUser)
     {
         if ($requestUser == true)
         {
@@ -45,8 +45,36 @@
                     ),
                     'selectedProfile'   => array(
                         'id'        => $uuid,
-                        'name'      => $username,
-                        'legacy'    => false
+                        'name'      => $username
+                    ),
+                    'user' => array(
+                        'id'            => $uuid,
+                        'properties'    => array(
+                            array(
+                                'name'  => "preferredLanguage",
+                                'value' => "ru-ru"
+                            ),
+                            array(
+                                'name'  => "registrationCountry",
+                                'value' => "RU"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
+        function request_authserver_profile_refresh($uuid, $username, $access_token, $client_token, $requestUser)
+    {
+        if ($requestUser == true)
+        {
+            request_die_json(
+                array(
+                    'accessToken'       => $access_token,
+                    'clientToken'       => $client_token,
+                    'selectedProfile'   => array(
+                        'id'        => $uuid,
+                        'name'      => $username
                     ),
                     'user' => array(
                         'id'            => $uuid,
@@ -69,16 +97,9 @@
             array(
                 'accessToken'       => $access_token,
                 'clientToken'       => $client_token,
-                'availableProfiles' => array(
-                    array(
-                        'name'      => $username,
-                        'id'        => $uuid
-                    )
-                ),
                 'selectedProfile'   => array(
                     'id'        => $uuid,
-                    'name'      => $username,
-                    'legacy'    => false
+                    'name'      => $username
                 )
             )
         );
