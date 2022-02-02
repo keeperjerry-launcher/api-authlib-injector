@@ -4,14 +4,36 @@
 
 ## Инструкция по установке
 
-1) Перейти к файлу `api_settings.php` по пути `authlib/_functions/` и настроить его
-2) Закинуть папку `authlib` (без переименовывания) в корень сайта DLE
-3) В настрйоках лаунчера указать ссылку `https://example.com/authlib`, где:
-* `https` - протокол использования сайта (используете ли вы `http` или `https`)
-* `example.com` - домен вашего сайта
-* Обратите ваше внимание, что `/` в конце указывать не нужно!
-4) Чтобы привязать игровой сервер к API - нужно вписать следующую команду: 
+1) Перейти к файлу `api_settings.php` по пути `authlib/_functions/` и настроить его.
+
+2) Закинуть папку `authlib` (без переименовывания) в корень сайта DLE.
+
+3) В настрйоках лаунчера указать настройки:
+```java
+# Настрйока API authlib-injector под лаунчер
+
+authHandler: "authlib-injector";
+authHandlerConfig: {
+    urlApiInjector: "https://example.com";
+};
+
+authProvider: "authlib-injector";
+authProviderConfig: {
+    urlApiInjector: "https://example.com";
+};
+
+textureProvider: "authlib-injector";
+textureProviderConfig: {
+    urlApiInjector: "https://example.com";
+};
 ```
+ссылка на ваш сайт - `https://example.com`, где:
+* `https` - протокол использования сайта (используете ли вы `http` или `https`)
+* `api.example.com` - домен вашего сайта для API
+* Обратите ваше внимание, что `/` в конце указывать не нужно!
+
+4) Чтобы привязать игровой сервер к API - нужно вписать следующую команду: 
+```java
 java -javaagent:authlib-injector-1.1.40.jar=example.com/authlib -jar minecraft_server.jar
 ```
 где:
@@ -21,4 +43,8 @@ java -javaagent:authlib-injector-1.1.40.jar=example.com/authlib -jar minecraft_s
 
 ## Личный комментарий
 
-Скрипт может быть немного дырявым, но ишью всегда открыт
+Чтобы переадресовать со своего сайта `example.com` на API Authlib Injector, можно добавить в заголовок вашего DLE параметр `X-Authlib-Injector-API-Location`:
+* `X-Authlib-Injector-API-Location: /authlib/` - сервер перейдет на сервер по адресу `example.com/authlib/`.
+* `X-Authlib-Injector-API-Location: https://api.example.com/authlib/` - сервер переадресует на указанный домен.
+
+Скрипт может быть немного дырявым, но ишью всегда открыт.

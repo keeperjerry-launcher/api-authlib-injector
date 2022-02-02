@@ -1,15 +1,33 @@
+RewriteEngine on
 Options All -Indexes
-SetEnv HTTP_MOD_REWRITE off
-RewriteEngine off
-ErrorDocument 403 /authlib/404.php
-ErrorDocument 404 /authlib/404.php
 AddDefaultCharset UTF-8
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Error Pages
+ErrorDocument 403 /authlib/404.php
+ErrorDocument 404 /authlib/404.php
+
 # API Server
-#RewriteRule ^authlib/api/profiles/minecraft$ /authlib/api/profiles.php$1 [L]
+RewriteRule ^api/profiles/minecraft$ /authlib/api/minecraft.php$1 [L]
 
-RewriteRule ^(.*)$ /authlib/index.php [QSA,L]
+# Auth Server
+RewriteRule ^authserver/authenticate$ /authlib/authserver/authenticate.php$1 [L]
+RewriteRule ^authserver/refresh$ /authlib/authserver/refresh.php$1 [L]
+RewriteRule ^authserver/validate$ /authlib/authserver/validate.php$1 [L]
+RewriteRule ^authserver/invalidate$ /authlib/authserver/invalidate.php$1 [L]
+RewriteRule ^authserver/signout$ /authlib/authserver/signout.php$1 [L]
 
+# Session Server
+RewriteRule ^sessionserver/session/minecraft/join$ /authlib/sessionserver/join.php$1 [L]
+RewriteRule ^sessionserver/session/minecraft/hasJoined$ /authlib/sessionserver/hasJoined.php$1 [L]
+RewriteRule ^sessionserver/session/minecraft/profile/([^/]*)$ /authlib/sessionserver/profile.php$1 [L]
+
+# Default 
+RewriteRule ^(/?)$ /authlib/index.php [QSA,L]
+
+# File settings
 <Files .htaccess>
     order allow,deny
     deny from all
