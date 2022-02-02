@@ -28,3 +28,5 @@
     }
 
     $json = json_decode(file_get_contents('php://input'));
+    $email = $json->username;
+    $password = $json->password;

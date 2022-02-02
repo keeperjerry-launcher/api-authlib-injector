@@ -85,7 +85,6 @@
 
     try
     {
-        // Потом понадобится uuid с '-', поэтому не могу внести единую функцию
         $uuid = uuidConvertShort($sql_auth_result[$config['sql_username']]);
         $username = $sql_auth_result[$config['sql_username']];
         $new_access_token = getRandomMD5();
