@@ -32,9 +32,8 @@
     $email = $json->username;
     $password = $json->password;
     $clientToken = $json->clientToken;
-    $agent = $json->agent;
 
-    if ($json->requestUser != true)
+    if (empty($json->requestUser))
     {
         $requestUser = false;
     }
@@ -95,8 +94,6 @@
         $update_access_token->bindValue(':token2', $clientToken);
         $update_access_token->bindValue(':id', $sql_auth_result[$config['sql_id']]);
         $update_access_token->execute();
-
-        request_authserver_profile_auth($uuid, $username, $new_access_token, $clientToken, $requestUser);
     }
     catch (PDOException $e)
     {
@@ -106,3 +103,5 @@
             "Sorry, server is down! We are working on this problem!"
         );
     }
+
+    request_authserver_profile_auth($uuid, $username, $new_access_token, $clientToken, $requestUser);

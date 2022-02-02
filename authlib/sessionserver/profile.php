@@ -24,14 +24,13 @@
         die();
     }
 
-    $uuid = filter_input(INPUT_GET,'uuid',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $uuid = shortUuid(filter_input(INPUT_GET,'uuid',FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     try
     {
         $stmt = $pdo->prepare("SELECT {$config['sql_username']},{$config['sql_uuid']},{$config['sql_skin_hash']},{$config['sql_cloak_hash']} FROM {$config['sql_db_table']} WHERE {$config['sql_uuid']} = :uuid LIMIT 1");
 		$stmt->bindValue(':uuid', $uuid);
         $stmt->execute();
-        
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     catch (PDOException $e)

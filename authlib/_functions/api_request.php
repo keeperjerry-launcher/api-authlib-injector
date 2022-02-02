@@ -63,6 +63,23 @@
                 )
             );
         }
+
+        request_die_json(
+            array(
+                'accessToken'       => $access_token,
+                'clientToken'       => $client_token,
+                'availableProfiles' => array(
+                    array(
+                        'name'      => $username,
+                        'id'        => $uuid
+                    )
+                ),
+                'selectedProfile'   => array(
+                    'id'        => $uuid,
+                    'name'      => $username
+                )
+            )
+        );
     }
 
     function request_authserver_profile_refresh($uuid, $username, $access_token, $client_token, $requestUser)

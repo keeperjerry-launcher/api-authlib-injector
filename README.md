@@ -14,17 +14,17 @@
 
 authHandler: "authlib-injector";
 authHandlerConfig: {
-    urlApiInjector: "https://example.com";
+    urlApiInjector: "https://example.com/authlib";
 };
 
 authProvider: "authlib-injector";
 authProviderConfig: {
-    urlApiInjector: "https://example.com";
+    urlApiInjector: "https://example.com/authlib";
 };
 
 textureProvider: "authlib-injector";
 textureProviderConfig: {
-    urlApiInjector: "https://example.com";
+    urlApiInjector: "https://example.com/authlib";
 };
 ```
 ссылка на ваш сайт - `https://example.com`, где:
@@ -34,7 +34,7 @@ textureProviderConfig: {
 
 4) Чтобы привязать игровой сервер к API - нужно вписать следующую команду: 
 ```java
-java -javaagent:authlib-injector-1.1.40.jar=example.com/authlib -jar minecraft_server.jar
+java -javaagent:authlib-injector-1.1.40.jar=https://example.com/authlib -jar minecraft_server.jar
 ```
 где:
 * `authlib-injector-1.1.40.jar` - сам файл `authlib-injector.jar`
@@ -46,5 +46,7 @@ java -javaagent:authlib-injector-1.1.40.jar=example.com/authlib -jar minecraft_s
 Чтобы переадресовать со своего сайта `example.com` на API Authlib Injector, можно добавить в заголовок вашего DLE параметр `X-Authlib-Injector-API-Location`:
 * `X-Authlib-Injector-API-Location: /authlib/` - сервер перейдет на сервер по адресу `example.com/authlib/`.
 * `X-Authlib-Injector-API-Location: https://api.example.com/authlib/` - сервер переадресует на указанный домен.
+
+Лаунчер сервер к сожалению пока не умеет определять данный параметр (мб оно и к лучшему)
 
 Скрипт может быть немного дырявым, но ишью всегда открыт.

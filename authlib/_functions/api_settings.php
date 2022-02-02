@@ -2,7 +2,6 @@
 
     /*
     Необходимо выполнить SLQ Запрос:
-
     ============================================================
     -- Добавляет недостающие поля в таблицу
     ALTER TABLE dle_users
@@ -47,20 +46,16 @@
         'server_domain'             => "example.com",                                   // Домен сайта для скинов
         
         // Настройка скинов
-        'server_url_skins'          => "https://example.com/cabinet/",
+        'server_url_skins'          => "https://example.com/cabinet/path_to_skins/",
 
         // =========================================
         // Настройка SQL соединения 
         // =========================================
-        //'sql_db_host'               => "127.0.0.1",     // IP или домен базы данных
-        //'sql_db_database'           => "database",      // Имя базы данных
-        //'sql_db_user'               => "user",          // Пользователь базы данных
-        //'sql_db_password'           => "password",      // Пароль базы данных
+        'sql_db_host'               => "127.0.0.1",     // IP или домен базы данных
+        'sql_db_database'           => "database",      // Имя базы данных
+        'sql_db_user'               => "user",          // Пользователь базы данных
+        'sql_db_password'           => "password",      // Пароль базы данных
         // Требуемые права: SELECT и UPDATE
-        'sql_db_host'               => "127.0.0.1",         // IP или домен базы данных
-        'sql_db_database'           => "_test",             // Имя базы данных
-        'sql_db_user'               => "test",              // Пользователь базы данных
-        'sql_db_password'           => "6oki8ubO",          // Пароль базы данных
 
         // Переменные таблицы SQL
         'sql_db_table'              => "dle_users",         // Таблица с пользователями
