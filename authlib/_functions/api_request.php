@@ -63,8 +63,9 @@
                 )
             );
         }
+    }
 
-        function request_authserver_profile_refresh($uuid, $username, $access_token, $client_token, $requestUser)
+    function request_authserver_profile_refresh($uuid, $username, $access_token, $client_token, $requestUser)
     {
         if ($requestUser == true)
         {
