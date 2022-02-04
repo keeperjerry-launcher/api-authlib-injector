@@ -127,15 +127,27 @@
     // SessionServer Request JSON
     // =========================================
     // Texture request
-    function request_get_textures($skins_url, $skin_hash, $cloak_hash)
+    function request_get_textures($skins_url, $skin_hash, $cloak_hash, $skin_type)
     {
         $results = array();
 
         if (!empty($skin_hash))
         {
-            $results['SKIN'] = array (
-                'url' => $skins_url.'skins/'.$skin_hash.".png"
-            );
+            if ($skin_type == "1")
+			{
+				$results['SKIN'] = array (
+					'url' => $skins_url.'skins/'.$skin_hash.".png",
+					"metadata" => array (
+                        "model" => "slim"
+                    )
+				);
+			}
+			else
+			{
+				$results['SKIN'] = array (
+					'url' => $skins_url.'skins/'.$skin_hash.".png"
+				);
+			}
         }
 
         if (!empty($cloak_hash))
@@ -149,21 +161,21 @@
     }
     
     // Base64 request
-    function request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+    function request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
     {
         $base64 = json_encode(
             array(
                 'timestamp'     => time(),
                 'profileId'     => $uuid,
                 'profileName'   => $username,
-                'textures'      => request_get_textures($skins_url, $skin_hash, $cloak_hash)
+                'textures'      => request_get_textures($skins_url, $skin_hash, $cloak_hash, $skin_type)
             ), JSON_UNESCAPED_SLASHES
         );
         return base64_encode($base64);
     }
 
     // Session request
-    function request_get_session_profile($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+    function request_get_session_profile($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
     {
         request_die_json(
             array (
@@ -172,7 +184,7 @@
                 'properties' => array(
                     array(
                         'name'      => "textures",
-                        'value'     => request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash)
+                        'value'     => request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
                     )
                 )
             )

@@ -52,7 +52,7 @@
 
     try 
     {
-        $sql_auth = $pdo->prepare("SELECT {$config['sql_id']},{$config['sql_username']},{$config['sql_password']} FROM {$config['sql_db_table']} WHERE {$config['sql_email']} = :email LIMIT 1");
+        $sql_auth = $pdo->prepare("SELECT {$config['sql_id']},{$config['sql_username']},{$config['sql_password']},{$config['sql_uuid']} FROM {$config['sql_db_table']} WHERE {$config['sql_email']} = :email LIMIT 1");
         $sql_auth->bindValue(':email', $email);
         $sql_auth->execute();
         $sql_auth_result = $sql_auth->fetch(PDO::FETCH_ASSOC);
@@ -84,12 +84,9 @@
 
     try
     {
-        $uuid = uuidConvertShort($sql_auth_result[$config['sql_username']]);
-        $username = $sql_auth_result[$config['sql_username']];
         $new_access_token = getRandomMD5();
 
-        $update_access_token = $pdo->prepare("UPDATE {$config['sql_db_table']} SET {$config['sql_uuid']} = :uuid , {$config['sql_access_token']} = :token1 , {$config['sql_client_token']} = :token2 WHERE {$config['sql_id']} = :id");
-        $update_access_token->bindValue(':uuid', $uuid);
+        $update_access_token = $pdo->prepare("UPDATE {$config['sql_db_table']} SET {$config['sql_access_token']} = :token1 , {$config['sql_client_token']} = :token2 WHERE {$config['sql_id']} = :id");
         $update_access_token->bindValue(':token1', $new_access_token);
         $update_access_token->bindValue(':token2', $clientToken);
         $update_access_token->bindValue(':id', $sql_auth_result[$config['sql_id']]);
@@ -104,4 +101,4 @@
         );
     }
 
-    request_authserver_profile_auth($uuid, $username, $new_access_token, $clientToken, $requestUser);
+    request_authserver_profile_auth($sql_auth_result[$config['sql_uuid']], $sql_auth_result[$config['sql_username']], $new_access_token, $clientToken, $requestUser);
