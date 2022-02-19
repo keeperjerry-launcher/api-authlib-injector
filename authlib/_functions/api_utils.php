@@ -51,7 +51,7 @@
     function getSignature($data_base64) 
     {
         $keyDir = $_SERVER['DOCUMENT_ROOT'].'/authlib/_crypto/';
-        openssl_sign($data_base64, $signature, openssl_pkey_get_private(file_get_contents($keyDir.'private.pem')))
+        openssl_sign($data_base64, $signature, openssl_pkey_get_private(file_get_contents($keyDir.'private.pem')));
         return base64_encode($signature);
     }
 
