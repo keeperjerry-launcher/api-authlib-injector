@@ -73,7 +73,7 @@
         );
     }
 
-    if($username != $row[$config['sql_username']])
+    if($row == null || $username != $row[$config['sql_username']])
     {
         request_deny(
             "Not Found", 

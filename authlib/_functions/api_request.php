@@ -1,6 +1,4 @@
 <?php
-    include $_SERVER['DOCUMENT_ROOT'].'/authlib/_functions/api_settings.php';
-
     function request_die_json($array_data)
     {
         header('Content-Type: application/json; charset=UTF-8');
@@ -153,23 +151,20 @@
         }
         else 
         {
-            if($config['server_default_skin'])
+            if ($skin_type == "1")
             {
-                if ($skin_type == "1")
-                {
-                    $results['SKIN'] = array (
-                        'url' => $skins_url.'default/c28df375e0797f7062e7c54c3ea5b3d0.png',
-                        "metadata" => array (
-                            "model" => "slim"
-                        )
-                    );
-                }
-                else
-                {
-                    $results['SKIN'] = array (
-                        'url' => $skins_url.'default/2f423114f9be651faffa6638f2dca78d.png'
-                    );
-                }
+                $results['SKIN'] = array (
+                    'url' => $skins_url.'default/51e80787e58b24fb2785895f0834543e.png',
+                    "metadata" => array (
+                        "model" => "slim"
+                    )
+                );
+            }
+            else
+            {
+                $results['SKIN'] = array (
+                    'url' => $skins_url.'default/f4987d535f6f36d9165989eb87fc9e7b.png'
+                );
             }
         }
 
@@ -181,12 +176,9 @@
         }
         else 
         {
-            if($config['server_default_cloak'])
-            {
-                $results['CAPE'] = array (
-					'url' => $skins_url.'default/e5bfc51833b5d38370761c29da7f2e61.png'
-				);
-            }
+            $results['CAPE'] = array (
+				'url' => $skins_url.'default/e5bfc51833b5d38370761c29da7f2e61.png'
+			);
         }
 
         return (Object)$results;
@@ -195,14 +187,29 @@
     // Base64 request
     function request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
     {
-        $base64 = json_encode(
-            array(
-                'timestamp'     => time(),
-                'profileId'     => $uuid,
-                'profileName'   => $username,
-                'textures'      => request_get_textures($skins_url, $skin_hash, $cloak_hash, $skin_type)
-            ), JSON_UNESCAPED_SLASHES
-        );
+        if (!$unsigned) 
+        {
+            $base64 = json_encode(
+                array(
+                    'timestamp'         => time(),
+                    'profileId'         => $uuid,
+                    'profileName'       => $username,
+                    'signatureRequired' => true,
+                    'textures'          => request_get_textures($skins_url, $skin_hash, $cloak_hash, $skin_type)
+                ), JSON_UNESCAPED_SLASHES
+            );
+        }
+        else 
+        {
+            $base64 = json_encode(
+                array(
+                    'timestamp'     => time(),
+                    'profileId'     => $uuid,
+                    'profileName'   => $username,
+                    'textures'      => request_get_textures($skins_url, $skin_hash, $cloak_hash, $skin_type)
+                ), JSON_UNESCAPED_SLASHES
+            );
+        }
         return base64_encode($base64);
     }
 

@@ -29,9 +29,17 @@
     }
 
     $json = json_decode(file_get_contents('php://input'));
-    $email = $json->username;
+    $user = $json->username;
     $password = $json->password;
     $clientToken = $json->clientToken;
+
+    if ($user == NULL || $password == NULL)
+    {
+        request_deny(
+            "IllegalArgumentException", 
+            "Invalid client token."
+        );
+    }
 
     if (empty($json->requestUser))
     {
@@ -52,8 +60,9 @@
 
     try 
     {
-        $sql_auth = $pdo->prepare("SELECT {$config['sql_id']},{$config['sql_username']},{$config['sql_password']},{$config['sql_uuid']} FROM {$config['sql_db_table']} WHERE {$config['sql_email']} = :email LIMIT 1");
-        $sql_auth->bindValue(':email', $email);
+        $sql_auth = $pdo->prepare("SELECT {$config['sql_id']},{$config['sql_username']},{$config['sql_password']},{$config['sql_uuid']} FROM {$config['sql_db_table']} WHERE {$config['sql_email']} = :user1 OR {$config['sql_username']} = :user2 LIMIT 1");
+        $sql_auth->bindValue(':user1', $user);
+        $sql_auth->bindValue(':user2', $user);
         $sql_auth->execute();
         $sql_auth_result = $sql_auth->fetch(PDO::FETCH_ASSOC);
     }
