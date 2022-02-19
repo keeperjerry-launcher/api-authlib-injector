@@ -11,11 +11,65 @@
 		: password_verify($getPass, $getHashPass);
     }
 
+    /* 
+    =================================================
+        Функция сигнатуры в MineCraft   
+    =================================================
+    */
+
+    function checkKeyPair()
+    {
+        if(!file_exists($_SERVER['DOCUMENT_ROOT'].'/authlib/_crypto/private.pem') || !file_exists($_SERVER['DOCUMENT_ROOT'].'/authlib/_crypto/public.pem'))
+        {
+            $new_key_pair = openssl_pkey_new(
+                array(
+                    "private_key_bits" => 2048,
+                    "private_key_type" => OPENSSL_KEYTYPE_RSA,
+                )
+            );
+
+            openssl_pkey_export($new_key_pair, $private_key_pem);
+            $details = openssl_pkey_get_details($new_key_pair);
+            $public_key_pem = $details['key'];
+
+            //Вычисляем подпись
+            openssl_sign($data, $signature, $private_key_pem, OPENSSL_ALGO_SHA256);
+
+            //Сохраняем
+            file_put_contents('../_crypto/private.pem', $private_key_pem);
+            file_put_contents('../_crypto/public.pem', $public_key_pem);
+        }
+    }
+
+    function getPublicKey()
+    {
+        $keyDir = $_SERVER['DOCUMENT_ROOT'].'/authlib/_crypto/';
+
+        if (file_exists($keyDir.'public.pem')) {
+            $GetContentFile = file_get_contents($keyDir.'public.pem');
+        }
+        return $GetContentFile;
+    }
+
+    function getSignature($data) 
+    {
+        $keyDir = $_SERVER['DOCUMENT_ROOT'].'/authlib/_crypto/';
+
+        openssl_sign($data, $signature, openssl_pkey_get_private($keyDir.'private.pem'))
+        return $signature;
+    }
+
 	/* 
     =================================================
         Функция генерации uuid minecraft offline   
     =================================================
     */
+
+    // Я хотел сдесь сделать тему на отьебись с генерацией offline uuid игроков,
+    // но понял что лучше этого не делать, потому что возникнут проблемы со сменой ника.
+    // Поэтому этот код здесь на всякий случай
+
+    // Поэтому в базе стоит тригер на генерацию UUID/Hex
 
     function generation_uuid($nickname)
     {

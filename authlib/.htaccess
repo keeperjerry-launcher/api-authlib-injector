@@ -22,8 +22,8 @@ RewriteRule ^authserver/signout$ /authlib/authserver/signout.php$1 [L]
 # Session Server
 RewriteRule ^sessionserver/session/minecraft/join$ /authlib/sessionserver/join.php$1 [L]
 RewriteRule ^sessionserver/session/minecraft/hasJoined$ /authlib/sessionserver/hasJoined.php$1 [L]
-RewriteRule ^sessionserver/session/minecraft/profile/([^_]*)$ /authlib/sessionserver/profile.php?uuid=$1 [L]
 RewriteRule ^sessionserver/session/minecraft/profile/([^_]*)?unsigned=([^_]*)$ /authlib/sessionserver/profile.php?uuid=$1&unsigned=$2 [L]
+RewriteRule ^sessionserver/session/minecraft/profile/([^_]*)$ /authlib/sessionserver/profile.php?uuid=$1 [L]
 
 # Default 
 RewriteRule ^(/?)$ /authlib/index.php [QSA,L]
@@ -35,6 +35,11 @@ RewriteRule ^(/?)$ /authlib/index.php [QSA,L]
 </Files>
 
 <Files .php>
+    order allow,deny
+    deny from all
+</Files>
+
+<Files .pem>
     order allow,deny
     deny from all
 </Files>

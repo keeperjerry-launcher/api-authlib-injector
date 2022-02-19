@@ -25,6 +25,8 @@
     }
 
     $uuid = shortUuid(filter_input(INPUT_GET,'uuid',FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+    $unsigned = filter_input(INPUT_GET,'unsigned',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+	if(empty($unsigned)) $unsigned = true;
 
     try
     {
@@ -54,4 +56,5 @@
         die();
     }
 
-    request_get_session_profile($row[$config['sql_username']], $uuid, $config['server_url_skins'], $row[$config['sql_skin_hash']], $row[$config['sql_cloak_hash']], $row[$config['sql_skin_type']]);
+    checkKeyPair(); // проверяем приватные ключи
+    request_get_session_profile($row[$config['sql_username']], $uuid, $config['server_url_skins'], $row[$config['sql_skin_hash']], $row[$config['sql_cloak_hash']], $row[$config['sql_skin_type']], $unsigned);

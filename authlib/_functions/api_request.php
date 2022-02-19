@@ -1,4 +1,6 @@
 <?php
+    include $_SERVER['DOCUMENT_ROOT'].'/authlib/_functions/api_settings.php';
+
     function request_die_json($array_data)
     {
         header('Content-Type: application/json; charset=UTF-8');
@@ -149,12 +151,42 @@
 				);
 			}
         }
+        else 
+        {
+            if($config['server_default_skin'])
+            {
+                if ($skin_type == "1")
+                {
+                    $results['SKIN'] = array (
+                        'url' => $skins_url.'default/c28df375e0797f7062e7c54c3ea5b3d0.png',
+                        "metadata" => array (
+                            "model" => "slim"
+                        )
+                    );
+                }
+                else
+                {
+                    $results['SKIN'] = array (
+                        'url' => $skins_url.'default/2f423114f9be651faffa6638f2dca78d.png'
+                    );
+                }
+            }
+        }
 
         if (!empty($cloak_hash))
         {
             $results['CAPE'] = array (
                 'url' => $skins_url.'cloaks/'.$cloak_hash.".png"
             );
+        }
+        else 
+        {
+            if($config['server_default_cloak'])
+            {
+                $results['CAPE'] = array (
+					'url' => $skins_url.'default/e5bfc51833b5d38370761c29da7f2e61.png'
+				);
+            }
         }
 
         return (Object)$results;
@@ -175,8 +207,26 @@
     }
 
     // Session request
-    function request_get_session_profile($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
+    function request_get_session_profile($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type, $unsigned)
     {
+		$request = request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type);
+		
+        if (!$unsigned) {
+            request_die_json(
+                array (
+                    'id' => $uuid,
+                    'name' => $username,
+                    'properties' => array(
+                        array(
+                            'name'      => "textures",
+                            'value'     => $request,
+							'signature' => getSignature($request)
+                        )
+                    )
+                )
+            );
+        }
+
         request_die_json(
             array (
                 'id' => $uuid,
@@ -184,7 +234,7 @@
                 'properties' => array(
                     array(
                         'name'      => "textures",
-                        'value'     => request_get_base64($username, $uuid, $skins_url, $skin_hash, $cloak_hash, $skin_type)
+                        'value'     => $request
                     )
                 )
             )
