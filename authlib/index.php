@@ -9,6 +9,7 @@
 		ini_set('display_errors', 1);
 	}
 
+	checkKeyPair();
     request_die_json(
 		array(
 			'meta' => array (

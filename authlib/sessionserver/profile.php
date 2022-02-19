@@ -56,5 +56,4 @@
         die();
     }
 
-    checkKeyPair(); // проверяем приватные ключи
     request_get_session_profile($row[$config['sql_username']], $uuid, $config['server_url_skins'], $row[$config['sql_skin_hash']], $row[$config['sql_cloak_hash']], $row[$config['sql_skin_type']], $unsigned);
