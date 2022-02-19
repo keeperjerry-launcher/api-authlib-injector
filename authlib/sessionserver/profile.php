@@ -26,7 +26,7 @@
 
     $uuid = shortUuid(filter_input(INPUT_GET,'uuid',FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $unsigned = filter_input(INPUT_GET,'unsigned',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-	if(empty($unsigned)) $unsigned = true;
+	if(empty($unsigned)) $unsigned = false;
 
     try
     {
